@@ -7,7 +7,6 @@ find_package(catkin REQUIRED COMPONENTS
   costmap_2d
   dynamic_reconfigure
   geometry_msgs
-  people_msgs
   pluginlib
   roscpp
 )
