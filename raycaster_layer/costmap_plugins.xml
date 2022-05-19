@@ -1,5 +1,5 @@
 <class_libraries>
-    <library path="lib/libgrid_layer">
+    <library path="lib/libraycaster_layer">
       <class type="raycaster_layer_namespace::EnemiesLayer" base_class_type="costmap_2d::Layer">
         <description>避免运动到敌方视野</description>
       </class>

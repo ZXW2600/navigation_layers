@@ -31,7 +31,6 @@ namespace raycaster_layer_namespace
   void EnemiesLayer::OccupancyGridCallback(const nav_msgs::OccupancyGrid::ConstPtr &msg)
   {
     ROS_INFO("get map");
-
     global_map_inited = true;
     grid_map::GridMapRosConverter::fromOccupancyGrid(*msg, "elevation",
                                                      global_map);
@@ -98,6 +97,8 @@ namespace raycaster_layer_namespace
   void EnemiesLayer::updateBounds(double robot_x, double robot_y, double robot_yaw, double *min_x,
                                   double *min_y, double *max_x, double *max_y)
   {
+    ROS_INFO("update Bounds");
+
     if (rolling_window_)
       updateOrigin(robot_x - getSizeInMetersX() / 2, robot_y - getSizeInMetersY() / 2);
     if (!enabled_)
@@ -105,13 +106,11 @@ namespace raycaster_layer_namespace
 
     // update the global current status
     current_ = true;
-  }
 
-  void EnemiesLayer::updateCosts(costmap_2d::Costmap2D &master_grid, int min_i, int min_j, int max_i,
-                                 int max_j)
-  {
+    ROS_INFO("update Cost");
     if (global_map_inited && point_inited)
     {
+      costmap_2d::Costmap2D *costmap = layered_costmap_->getCostmap();
       {
         global_map.clear("raycast");
         auto k = global_map.getResolution();
@@ -141,7 +140,7 @@ namespace raycaster_layer_namespace
             {
               if (global_map.at("elevation", *iterator_inner) < 10)
               {
-                global_map.at("raycast", *iterator_inner) = 1;
+                costmap->setCost((*iterator_inner).transpose()[0], (*iterator_inner).transpose()[1], 200);
               }
               else
                 break;
@@ -149,11 +148,12 @@ namespace raycaster_layer_namespace
           }
         }
       }
-
-      this->costmap2dConverter_.initializeFromGridMap(this->global_map, master_grid);
-      // Copy data.
-      this->costmap2dConverter_.setCostmap2DFromGridMap(this->global_map, "raycast", master_grid);
     }
+  }
+
+  void EnemiesLayer::updateCosts(costmap_2d::Costmap2D &master_grid, int min_i, int min_j, int max_i,
+                                 int max_j)
+  {
   }
 
 } // end namespace
