@@ -12,6 +12,25 @@ find_package(catkin REQUIRED COMPONENTS
     rospy
     sensor_msgs
     tf2_geometry_msgs
+
+
+    grid_map_core
+    grid_map_ros
+    grid_map_cv
+    grid_map_filters
+    grid_map_loader
+    grid_map_msgs
+    grid_map_octomap
+    grid_map_rviz_plugin
+    grid_map_visualization
+    costmap_2d
+    grid_map_costmap_2d
+
+    geometry_msgs
+    sensor_msgs
+    cv_bridge
+    octomap_msgs
+    filters
 )
 
 # generate_dynamic_reconfigure_options(cfg/RangeSensorLayer.cfg)
